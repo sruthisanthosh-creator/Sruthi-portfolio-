@@ -1,0 +1,14 @@
+.abyss-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* The scene is atmosphere, never content — it must not compete with type. */
+  opacity: 0.92;
+}
+
+.abyss-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}

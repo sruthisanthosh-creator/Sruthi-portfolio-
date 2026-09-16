@@ -1,0 +1,748 @@
+/* ═══ Layout ═══════════════════════════════════════════════════════════════
+   One column, five zones, a fixed gauge on the left. Everything sits above
+   the WebGL scene on z-index 1; nothing but the gauge is fixed, so the page
+   scrolls past the water rather than the water scrolling with it.
+   ════════════════════════════════════════════════════════════════════════ */
+
+.column {
+  position: relative;
+  z-index: 1;
+}
+
+/* The depth gauge occupies the left rail from 1100px up, so content clears it. */
+@media (min-width: 1100px) {
+  .shell {
+    padding-left: calc(var(--gutter) + 6rem);
+  }
+}
+
+/* ── Airlock ─────────────────────────────────────────────────────────────── */
+
+.airlock {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--abyss-deep);
+}
+
+.airlock span {
+  color: var(--lumen-dim);
+  letter-spacing: 0.3em;
+}
+
+/* ── Word-mask reveal ────────────────────────────────────────────────────── */
+
+.split {
+  display: inline;
+}
+
+.split__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Padding keeps descenders and the Fraunces overshoot from being clipped by
+     the mask edge; the negative margin gives the space back to the layout. */
+  padding-block: 0.12em 0.16em;
+  margin-block: -0.12em -0.16em;
+}
+
+.split__mask::after {
+  content: ' ';
+  white-space: pre;
+}
+
+.split__word {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  min-height: min(100svh, 62rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(5rem, 14vh, 9rem) clamp(3rem, 8vh, 5rem);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.4rem, 3vh, 2.4rem);
+}
+
+.hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--silt);
+}
+
+.hero__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--lumen);
+  box-shadow: 0 0 10px var(--lumen);
+}
+
+.hero__name {
+  font-size: var(--t-h1);
+  line-height: 0.86;
+  letter-spacing: -0.038em;
+  font-variation-settings: 'SOFT' 40, 'WONK' 1, 'opsz' 144;
+  font-weight: 300;
+  color: var(--foam);
+}
+
+/*
+  The name is the brightest thing above 200 m, and it is already losing light
+  down its own height. Each line carries its own slice of that falloff.
+
+  The gradient sits on the elements that actually hold glyphs, not on the h1:
+  the reveal wraps every word in an overflow:hidden mask, and a parent's
+  background-clip:text has nothing to paint through once the text it is meant
+  to clip to lives inside those masks.
+*/
+.hero__line {
+  display: block;
+  --line-grad: linear-gradient(176deg, var(--foam) 10%, #a9dcd1 100%);
+}
+
+.hero__line--indent {
+  /* An optical indent, not a centred title — the second word hangs off the
+     first the way a signature does. */
+  padding-left: 0.13em;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 60, 'WONK' 1, 'opsz' 144;
+  --line-grad: linear-gradient(176deg, #a9dcd1 0%, var(--lumen-dim) 96%);
+}
+
+.hero__line,
+.hero__line .split__word {
+  background-image: var(--line-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__role {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.hero__rule {
+  width: clamp(2.5rem, 7vw, 6rem);
+  height: 1px;
+  background: linear-gradient(90deg, var(--lumen), transparent);
+}
+
+.hero__roleText {
+  color: var(--lumen);
+  letter-spacing: 0.24em;
+}
+
+.hero__thesis {
+  font-size: var(--t-lede);
+  line-height: 1.42;
+  font-weight: 300;
+  color: var(--silt);
+  text-wrap: pretty;
+}
+
+.hero__cue {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  margin-top: clamp(3rem, 9vh, 7rem);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-left: var(--gutter);
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--silt-dim);
+  transition: color 0.4s var(--ease);
+}
+
+@media (min-width: 1100px) {
+  .hero__cue {
+    margin-left: calc(var(--gutter) + 6rem);
+  }
+}
+
+.hero__cue:hover {
+  color: var(--lumen);
+}
+
+.hero__cueLine {
+  width: 4.5rem;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  animation: sink 2.8s var(--ease-in-out) infinite;
+}
+
+@keyframes sink {
+  0%, 100% { transform: scaleX(0.35); opacity: 0.4; }
+  50% { transform: scaleX(1); opacity: 1; }
+}
+
+/* ── Zones ───────────────────────────────────────────────────────────────── */
+
+.zone {
+  position: relative;
+  padding-block: var(--stack);
+}
+
+.zone__head {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vh, 1.8rem);
+  margin-bottom: clamp(2.5rem, 7vh, 5rem);
+}
+
+.zone__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.zone__rule {
+  flex: 0 1 7rem;
+  height: 1px;
+  background: var(--hair);
+}
+
+.zone__title {
+  font-size: var(--t-h2);
+  max-width: 18ch;
+  font-weight: 300;
+  font-variation-settings: 'SOFT' 34, 'WONK' 1, 'opsz' 120;
+}
+
+/* ── About ───────────────────────────────────────────────────────────────── */
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.2rem, 6vh, 4rem);
+}
+
+.about__ledeText {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t-h3);
+  line-height: 1.22;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 70, 'WONK' 1, 'opsz' 100;
+  color: var(--foam);
+  max-width: 24ch;
+}
+
+.about__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about__para {
+  display: block;
+  font-size: var(--t-body);
+  line-height: 1.68;
+}
+
+.about__status {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-top: 0.6rem;
+}
+
+.about__status p {
+  color: var(--lumen);
+  letter-spacing: 0.18em;
+}
+
+.about__beacon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lumen);
+  box-shadow: 0 0 0 0 rgb(79 240 200 / 0.55);
+  animation: beacon 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes beacon {
+  0% { box-shadow: 0 0 0 0 rgb(79 240 200 / 0.5); }
+  70% { box-shadow: 0 0 0 14px rgb(79 240 200 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(79 240 200 / 0); }
+}
+
+/* ── Work ────────────────────────────────────────────────────────────────── */
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(5rem, 16vh, 12rem);
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.8rem, 4vw, 4rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .project {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  }
+
+  .project--flipped .project__plate {
+    order: 2;
+  }
+}
+
+.project__plate {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-width: 100%;
+}
+
+.project__index {
+  position: absolute;
+  top: -0.4rem;
+  left: 0;
+  font-size: var(--t-mono);
+  color: var(--silt-dim);
+  letter-spacing: 0.2em;
+}
+
+.project--flipped .project__index {
+  left: auto;
+  right: 0;
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+  /* Bleed past the layout box: the mask is smaller than the canvas, so the
+     glow can spill without a hard edge where the element stops. */
+  margin: -12%;
+  cursor: crosshair;
+}
+
+.project__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.project__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+}
+
+.project__metaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--silt-dim);
+}
+
+.project__name {
+  font-size: var(--t-h2);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  font-variation-settings: 'SOFT' 45, 'WONK' 1, 'opsz' 140;
+  margin-bottom: 0.5rem;
+}
+
+.project__blurb {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: var(--t-lede);
+  line-height: 1.32;
+  font-variation-settings: 'SOFT' 70, 'WONK' 1, 'opsz' 72;
+  color: #a8ccc4;
+  max-width: 26ch;
+}
+
+.project__rule {
+  margin-block: clamp(1.4rem, 3vh, 2.2rem);
+}
+
+.project__body {
+  max-width: 46ch;
+  line-height: 1.68;
+}
+
+.project__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.8rem, 5vw, 3.5rem);
+  margin: clamp(1.6rem, 4vh, 2.6rem) 0 0;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.metric__value {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3.1rem);
+  line-height: 1;
+  font-weight: 300;
+  font-variation-settings: 'SOFT' 20, 'WONK' 0, 'opsz' 100;
+  color: var(--lumen);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric__label {
+  margin: 0;
+  color: var(--silt-dim);
+}
+
+/* ── Craft ───────────────────────────────────────────────────────────────── */
+
+.craft {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.craft__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.craft__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  align-items: baseline;
+  padding-block: clamp(1.1rem, 2.5vh, 1.7rem);
+  border-top: 1px solid var(--hair);
+}
+
+.craft__list > li:last-child .craft__row {
+  border-bottom: 1px solid var(--hair);
+}
+
+@media (min-width: 760px) {
+  .craft__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 7rem;
+    gap: 2rem;
+  }
+
+  .craft__head {
+    display: contents;
+  }
+}
+
+.craft__skill {
+  font-size: clamp(1.15rem, 0.9rem + 0.9vw, 1.6rem);
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'SOFT' 30, 'WONK' 0, 'opsz' 60;
+}
+
+.craft__detail {
+  font-size: var(--t-small);
+  color: var(--silt-dim);
+  line-height: 1.55;
+}
+
+.craft__gauge {
+  height: 1px;
+  background: var(--hair);
+  align-self: center;
+  overflow: visible;
+}
+
+.craft__bar {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, var(--lumen-dim), var(--lumen));
+  box-shadow: 0 0 8px rgb(79 240 200 / 0.55);
+  transform-origin: left;
+}
+
+.craft__tools {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.craft__toolsLabel {
+  color: var(--lumen);
+  letter-spacing: 0.22em;
+}
+
+.craft__toolList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.7rem;
+}
+
+.craft__toolList li {
+  padding: 0.44rem 0.95rem;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  font-size: var(--t-small);
+  color: var(--silt);
+  transition: border-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.craft__toolList li:hover {
+  border-color: var(--hair-lit);
+  color: var(--foam);
+}
+
+/* ── Contact ─────────────────────────────────────────────────────────────── */
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 6vh, 3.5rem);
+}
+
+.contact__email {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-self: flex-start;
+  max-width: 100%;
+  font-family: var(--display);
+  font-size: clamp(1.25rem, 0.5rem + 3.4vw, 3.4rem);
+  line-height: 1.1;
+  font-weight: 300;
+  font-variation-settings: 'SOFT' 40, 'WONK' 1, 'opsz' 110;
+  color: var(--foam);
+  overflow-wrap: anywhere;
+}
+
+.contact__emailRule {
+  height: 1px;
+  background: var(--lumen);
+  transform: scaleX(0.2);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease);
+  box-shadow: 0 0 10px rgb(79 240 200 / 0.6);
+}
+
+.contact__email:hover .contact__emailRule,
+.contact__email:focus-visible .contact__emailRule {
+  transform: scaleX(1);
+}
+
+.contact__links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2.2rem;
+}
+
+.contact__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-block: 0.5rem;
+  font-size: var(--t-small);
+  color: var(--silt);
+  transition: color 0.35s var(--ease);
+}
+
+.contact__links a:hover {
+  color: var(--lumen);
+}
+
+.contact__arrow {
+  font-size: 0.8em;
+  transition: transform 0.35s var(--ease);
+}
+
+.contact__links a:hover .contact__arrow {
+  transform: translate(2px, -2px);
+}
+
+.contact__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem 2rem;
+  padding-top: clamp(2.5rem, 7vh, 4.5rem);
+  border-top: 1px solid var(--hair);
+}
+
+.contact__foot p {
+  color: var(--silt-dim);
+}
+
+/* ── Depth gauge ─────────────────────────────────────────────────────────── */
+
+.hud {
+  position: fixed;
+  z-index: 40;
+  left: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 1.1rem;
+  pointer-events: none;
+}
+
+@media (min-width: 1100px) {
+  .hud {
+    display: flex;
+  }
+}
+
+.hud__readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.28rem;
+}
+
+.hud__depth {
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.5rem);
+  letter-spacing: 0.01em;
+  color: var(--foam);
+  font-weight: 300;
+}
+
+.hud__unit {
+  color: var(--lumen);
+  letter-spacing: 0.1em;
+}
+
+.hud__column {
+  position: relative;
+  height: min(42vh, 26rem);
+  display: flex;
+}
+
+.hud__track {
+  position: relative;
+  width: 1px;
+  height: 100%;
+  background: var(--hair);
+  overflow: hidden;
+}
+
+.hud__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--lumen), var(--bloom));
+  transform-origin: top;
+  transform: scaleY(0);
+  box-shadow: 0 0 10px rgb(79 240 200 / 0.6);
+}
+
+.hud__zones {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.hud__zone {
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+.hud__zone button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.4rem 0.3rem 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--silt-dim);
+  transition: color 0.4s var(--ease);
+}
+
+.hud__zone button:hover,
+.hud__zone.is-current button {
+  color: var(--lumen);
+}
+
+.hud__tick {
+  width: 10px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.4s var(--ease);
+}
+
+.hud__zone.is-current .hud__tick {
+  width: 20px;
+}
+
+.hud__name {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: inherit;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.hud__zone button:hover .hud__name,
+.hud__zone.is-current .hud__name {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hud__label {
+  color: var(--silt-dim);
+  letter-spacing: 0.16em;
+  max-width: 7rem;
+  line-height: 1.5;
+}
+
+/* ── Narrow viewports ────────────────────────────────────────────────────── */
+
+@media (max-width: 899px) {
+  .project__plate {
+    aspect-ratio: 5 / 4;
+  }
+
+  .zone__title {
+    max-width: 14ch;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__line--indent {
+    padding-left: 0;
+  }
+
+  .project__plate {
+    aspect-ratio: 1 / 1;
+  }
+}

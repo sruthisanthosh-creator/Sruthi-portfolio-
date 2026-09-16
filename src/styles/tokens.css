@@ -1,0 +1,53 @@
+/* ── Bioluminescent Deep ─────────────────────────────────────────────────────
+   A single committed visual world: there is no light source down here except
+   the one the page makes. Defined once, on :root, so nothing resolves to an
+   inherited host colour.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+
+  /* Ground — near-black carrying a deliberate blue-green bias, never neutral grey */
+  --abyss: #03070c;
+  --abyss-deep: #010407;
+  --trench: #071720;
+  --trench-hi: #0c2530;
+
+  /* Light — the only two emitters on the page */
+  --lumen: #4ff0c8;
+  --lumen-dim: #2aa88b;
+  --bloom: #b679ff;
+  --bloom-dim: #6f47a3;
+
+  /* Type */
+  --foam: #e6f5f2;
+  --silt: #7e9aa6;
+  --silt-dim: #46626d;
+
+  /* Strokes: hairlines that read as pressure, not as card borders */
+  --hair: rgb(126 154 166 / 0.16);
+  --hair-lit: rgb(79 240 200 / 0.28);
+
+  /* Type families */
+  --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --body: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Type scale — 1.32 ratio, clamped so the display sizes hold on a phone */
+  --t-mono: clamp(0.62rem, 0.58rem + 0.2vw, 0.72rem);
+  --t-small: clamp(0.82rem, 0.78rem + 0.2vw, 0.9rem);
+  --t-body: clamp(1rem, 0.94rem + 0.3vw, 1.14rem);
+  --t-lede: clamp(1.32rem, 1.1rem + 1.1vw, 2rem);
+  --t-h3: clamp(1.6rem, 1.2rem + 1.9vw, 2.6rem);
+  --t-h2: clamp(2.3rem, 1.4rem + 4.2vw, 5rem);
+  --t-h1: clamp(3.4rem, 1.2rem + 10.5vw, 11rem);
+
+  /* Rhythm */
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --stack: clamp(3.5rem, 9vh, 8rem);
+  --measure: 62ch;
+
+  /* Motion — one easing curve for the whole page, so everything moves as one body */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
