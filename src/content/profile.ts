@@ -5,9 +5,8 @@
  *  Every word, link and project on the site is read from here. Change a string,
  *  save, and the page updates — no component touching required.
  *
- *  ⚠️  The five projects below are PLACEHOLDERS written to the right shape and
- *      length so the layout reads as finished. Replace them with real work
- *      before sharing this publicly.
+ *  The projects below are real. The bio, craft weights and tool list are still
+ *  first-draft guesses — rewrite them in your own words before sharing this.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -69,64 +68,30 @@ export const profile = {
 
   projects: [
     {
-      name: 'Tidepool',
-      blurb: 'A savings account that behaves like water, not a spreadsheet',
-      role: 'Product design · Design system',
-      year: '2025',
-      body: 'People under-save because a balance is an abstraction. Tidepool renders money as a volume with a tide line — you can see what is committed, what is free, and what is draining before the number changes. The hardest part was making a playful metaphor survive a bank audit.',
+      name: 'Padmasaliya',
+      blurb: 'Matrimony for a community small enough that everyone is someone\u2019s cousin',
+      role: 'End-to-end design \u00b7 Build',
+      year: '2026',
+      body: 'The people using it are parents, not the people being matched, so it is built for someone doing this exactly once \u2014 sign-in by emailed link rather than a password to remember, and gotram, rasi and nakshatra as structured fields instead of free text someone has to interpret. The subscription became credits: one credit unlocks one family permanently, because charging twice for the same family is how you lose a community\u2019s trust. Packs are only offered when there are genuinely that many profiles left to spend them on.',
       metrics: [
-        { value: '+34%', label: 'deposit rate' },
-        { value: '11', label: 'screens, total' },
+        { value: '1', label: 'credit per family, forever' },
+        { value: '28', label: 'gotrams, structured' },
       ],
-      art: { hue: 0.05, seed: 11.3, churn: 0.45 },
+      art: { hue: 0.88, seed: 31.4, churn: 0.55 },
+      href: 'https://github.com/sruthisanthosh-creator/Padmasaliya-matrimonial',
     },
     {
-      name: 'Meridian',
-      blurb: 'Radiology triage for a ward that is always one radiologist short',
-      role: 'Lead design · Research',
-      year: '2025',
-      body: 'A worklist tool where the ranking is the product. I shadowed three reading rooms to learn what clinicians actually re-sort by, then built a queue that explains its own ordering — every card states why it is where it is, and a wrong order can be corrected in one gesture.',
+      name: 'Descent',
+      blurb: 'The portfolio you are reading, built as a dive to the sea floor',
+      role: 'Design \u00b7 WebGL \u00b7 Build',
+      year: '2026',
+      body: 'Scrolling descends through the real pelagic zones and the design follows the physics: light fails on the way down, so by this section bioluminescence is the only light left. Nothing here is an image \u2014 this plate is a fragment shader evaluated every frame, and its entire identity is three numbers. The depth gauge interpolates within each section rather than across the document, so the reading always agrees with the heading beside it.',
       metrics: [
-        { value: '−41%', label: 'time to first read' },
-        { value: '3', label: 'reading rooms studied' },
+        { value: '0', label: 'image files' },
+        { value: '11,034', label: 'metres, surface to floor' },
       ],
-      art: { hue: 0.30, seed: 47.9, churn: 0.8 },
-    },
-    {
-      name: 'Sonder',
-      blurb: 'Long-form reading that adapts its typography to how tired you are',
-      role: 'Concept · Interaction · Build',
-      year: '2024',
-      body: 'Measure, leading and contrast shift across a reading session, driven by scroll cadence rather than a settings panel. Nobody wants to tune a typeface at midnight. The typographic ramp is a hand-tuned curve, not a linear interpolation — linear felt like the page was breathing at you.',
-      metrics: [
-        { value: '26 min', label: 'median session' },
-        { value: '0', label: 'settings screens' },
-      ],
-      art: { hue: 0.82, seed: 88.1, churn: 0.35 },
-    },
-    {
-      name: 'Kiln',
-      blurb: 'Scheduling for a ceramics studio where the oven takes 14 hours',
-      role: 'End-to-end design',
-      year: '2024',
-      body: 'Booking software assumes slots are interchangeable. A kiln firing is not — it is a shared, unforgiving, thermally-coupled resource, and one person loading wrong costs everyone a week. The calendar had to show the firing curve, not the hour.',
-      metrics: [
-        { value: '−90%', label: 'mis-loads' },
-        { value: '14h', label: 'the constraint' },
-      ],
-      art: { hue: 1.0, seed: 23.7, churn: 0.95 },
-    },
-    {
-      name: 'Halcyon',
-      blurb: 'A circadian companion that refuses to show you a score',
-      role: 'Product design · Motion',
-      year: '2023',
-      body: 'Sleep apps make anxious people more anxious by grading their night. Halcyon reports nothing numeric before noon — the morning screen is a single ambient field you read at a glance. The entire interface has one chart, and it is deliberately hard to find.',
-      metrics: [
-        { value: '0', label: 'scores shown' },
-        { value: '+19%', label: 'week-4 retention' },
-      ],
-      art: { hue: 0.58, seed: 64.2, churn: 0.28 },
+      art: { hue: 0.08, seed: 11.3, churn: 0.42 },
+      href: 'https://github.com/sruthisanthosh-creator/Sruthi-portfolio-',
     },
   ] satisfies Project[] as Project[],
 

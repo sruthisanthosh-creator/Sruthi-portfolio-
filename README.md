@@ -8,7 +8,7 @@ themselves.
 
 Everything you see is rendered in real time. There is not a single image file
 in this repository — the creature, the drifting marine snow, the surface
-caustics and all five project plates are fragment shaders evaluated every frame.
+caustics and every project plate are fragment shaders evaluated every frame.
 
 ## Running it
 
@@ -33,9 +33,12 @@ Each project also carries three numbers that generate its artwork:
 | `seed`  | any   | Changes the noise field completely. Nudge it until you like the shape. |
 | `churn` | 0.3–1 | 0.3 is calm and glassy, 1.0 is turbulent and tendrilled.     |
 
-> ⚠️ **The five projects shipped here are placeholders.** They are written to
-> the right shape and length so the layout reads as finished. Replace them with
-> real work before sharing this.
+The Work section's heading counts itself, so adding or removing a project needs
+no other edit.
+
+> ⚠️ **The projects are real; the bio is not yet.** `thesis`, `about`, `craft`
+> and `tools` are still first-draft guesses — rewrite them in your own words
+> before sharing this.
 
 ## How it is put together
 

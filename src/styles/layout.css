@@ -363,6 +363,29 @@
   margin-bottom: 0.5rem;
 }
 
+.project__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  transition: color 0.4s var(--ease);
+}
+
+.project__link:hover {
+  color: var(--lumen);
+}
+
+.project__linkArrow {
+  font-family: var(--body);
+  font-size: 0.34em;
+  color: var(--silt-dim);
+  transition: transform 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+.project__link:hover .project__linkArrow {
+  transform: translate(0.15em, -0.15em);
+  color: var(--lumen);
+}
+
 .project__blurb {
   font-family: var(--display);
   font-style: italic;

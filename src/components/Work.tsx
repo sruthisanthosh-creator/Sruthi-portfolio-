@@ -45,7 +45,23 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             <span>{project.year}</span>
           </p>
 
-          <h3 className="project__name">{project.name}</h3>
+          <h3 className="project__name">
+            {project.href ? (
+              <a
+                className="project__link"
+                href={project.href}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {project.name}
+                <span className="project__linkArrow" aria-hidden="true">
+                  &#8599;
+                </span>
+              </a>
+            ) : (
+              project.name
+            )}
+          </h3>
           <p className="project__blurb">{project.blurb}</p>
 
           <hr className="rule project__rule" />
@@ -66,9 +82,23 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   )
 }
 
+/** Spelled out because the heading is prose, not a count in a UI. */
+const NUMERALS = [
+  'No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six',
+  'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve',
+]
+
 export function Work() {
+  const n = profile.projects.length
+  // Derived, so the heading cannot drift out of sync with the work below it.
+  const count = NUMERALS[n] ?? String(n)
+
   return (
-    <Zone id="work" index={2} title="Five things that make their own light">
+    <Zone
+      id="work"
+      index={2}
+      title={`${count} thing${n === 1 ? '' : 's'} that make their own light`}
+    >
       <div className="work">
         {profile.projects.map((p, i) => (
           <ProjectCard key={p.name} project={p} index={i} />
