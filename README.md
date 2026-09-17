@@ -10,14 +10,26 @@ Everything you see is rendered in real time. There is not a single image file
 in this repository — the creature, the drifting marine snow, the surface
 caustics and every project plate are fragment shaders evaluated every frame.
 
-## Running it
+## Seeing it
+
+**Live:** pushing to the default branch builds and publishes to GitHub Pages via
+`.github/workflows/deploy.yml`. One manual step is needed before the first run —
+**Settings → Pages → Build and deployment → Source → "GitHub Actions"** — after
+which the URL appears at the top of that same Settings → Pages screen.
+
+**Locally:**
 
 ```bash
 npm install     # requires the bundled .npmrc (see Notes)
-npm run dev
-npm run build
-npm run preview
+npm run dev     # http://localhost:5173
 ```
+
+```bash
+npm run build && npm run preview   # the production build, http://localhost:4173
+```
+
+A machine with a real GPU is worth using. The page is one full-screen fragment
+shader plus one per visible project, and software rendering crawls.
 
 ## Changing the content
 
