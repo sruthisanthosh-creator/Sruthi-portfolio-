@@ -1,8 +1,8 @@
 # Builds the site and publishes it to GitHub Pages.
 #
-# One manual step before the first run: Settings -> Pages -> Build and
-# deployment -> Source -> "GitHub Actions". Until that is set, this workflow
-# builds fine but has nowhere to deploy to.
+# No manual setup: configure-pages turns Pages on itself via the API the first
+# time this runs (that is what `enablement` does), using the pages:write
+# permission granted below.
 name: Deploy to Pages
 
 on:
@@ -40,6 +40,11 @@ jobs:
       - run: npm run build
 
       - uses: actions/configure-pages@v5
+        with:
+          # Creates the Pages site on the first run instead of failing with
+          # "Get Pages site failed ... verify that the repository has Pages
+          # enabled", which is what happens when it has never been turned on.
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:

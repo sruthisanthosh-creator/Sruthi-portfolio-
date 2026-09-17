@@ -13,9 +13,13 @@ caustics and every project plate are fragment shaders evaluated every frame.
 ## Seeing it
 
 **Live:** pushing to the default branch builds and publishes to GitHub Pages via
-`.github/workflows/deploy.yml`. One manual step is needed before the first run —
-**Settings → Pages → Build and deployment → Source → "GitHub Actions"** — after
-which the URL appears at the top of that same Settings → Pages screen.
+`.github/workflows/deploy.yml`, which turns Pages on itself on the first run. The
+URL is <https://sruthisanthosh-creator.github.io/Sruthi-portfolio-/>, and it also
+appears under Settings → Pages.
+
+If the deploy ever fails with *"Get Pages site failed"*, the repository's
+settings disallow the workflow enabling Pages by API — set **Settings → Pages →
+Build and deployment → Source → "GitHub Actions"** by hand once and re-run.
 
 **Locally:**
 
