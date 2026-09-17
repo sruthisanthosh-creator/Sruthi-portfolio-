@@ -264,19 +264,33 @@ export function LuminousPlate({ art, className }: { art: Project['art']; classNa
     const el = host.current
     if (!el) return
 
+    // Mirrored into a ref as well as state: the measuring loop below needs to
+    // read it every frame without the loop depending on a re-render.
+    const near = { current: false }
+
     const io = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
+      ([entry]) => {
+        near.current = entry.isIntersecting
+        setActive(entry.isIntersecting)
+      },
       { rootMargin: '12% 0px' },
     )
     io.observe(el)
 
     let frame = 0
     const tick = () => {
-      const rect = el.getBoundingClientRect()
-      const vh = window.innerHeight
-      // 0 when fully outside, 1 while comfortably inside.
-      const seen = 1 - Math.abs(rect.top + rect.height / 2 - vh / 2) / (vh * 0.85)
-      enter.current = Math.max(0, Math.min(1, seen * 1.5))
+      // getBoundingClientRect forces a layout. Five plates measuring every
+      // frame means five forced reflows per frame, four of them for artwork
+      // nobody can see — so off-screen plates measure nothing.
+      if (near.current) {
+        const rect = el.getBoundingClientRect()
+        const vh = window.innerHeight
+        // 0 when fully outside, 1 while comfortably inside.
+        const seen = 1 - Math.abs(rect.top + rect.height / 2 - vh / 2) / (vh * 0.85)
+        enter.current = Math.max(0, Math.min(1, seen * 1.5))
+      } else {
+        enter.current = 0
+      }
       frame = requestAnimationFrame(tick)
     }
     frame = requestAnimationFrame(tick)

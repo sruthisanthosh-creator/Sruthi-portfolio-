@@ -127,7 +127,7 @@ void main() {
 }
 `
 
-export function Backdrop() {
+export function Backdrop({ staticDepth = 0 }: { staticDepth?: number }) {
   const material = useRef<THREE.ShaderMaterial>(null)
 
 /*
@@ -139,11 +139,11 @@ export function Backdrop() {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uDepth: { value: 0 },
+      uDepth: { value: staticDepth },
       uResolution: { value: new THREE.Vector2(1, 1) },
       uPointer: { value: new THREE.Vector2(0, 0) },
     }),
-    [],
+    [staticDepth],
   )
 
   useFrame((state) => {

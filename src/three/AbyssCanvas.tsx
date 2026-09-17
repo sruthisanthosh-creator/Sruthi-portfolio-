@@ -46,9 +46,16 @@ export function AbyssCanvas() {
         frameloop={reduced || !visible ? 'demand' : 'always'}
       >
         <Suspense fallback={null}>
-          <Backdrop />
+          {/*
+            Under reduced motion the scene renders one frame and then holds, so
+            it is composed for that frame rather than for the descent: the water
+            opens at mid-depth instead of at the surface, and the creature is
+            left out entirely. Frozen at full surface brightness it sat over the
+            project copy with no way to drift clear of it.
+          */}
+          <Backdrop staticDepth={reduced ? 0.45 : 0} />
           <MarineSnow />
-          <Membrane />
+          {!reduced && <Membrane />}
 
           {FX && (
           /*

@@ -48,11 +48,6 @@
   margin-block: -0.12em -0.16em;
 }
 
-.split__mask::after {
-  content: ' ';
-  white-space: pre;
-}
-
 .split__word {
   display: inline-block;
   will-change: transform;

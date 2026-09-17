@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { motion, useReducedMotion, type Variants } from 'motion/react'
 import type { ReactNode } from 'react'
 
@@ -11,6 +12,8 @@ import type { ReactNode } from 'react'
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const
+
+type Tag = 'div' | 'section' | 'li' | 'p' | 'span' | 'h1' | 'h2' | 'h3'
 
 export function Rise({
   children,
@@ -29,8 +32,8 @@ export function Rise({
   const MotionTag = motion[as] as typeof motion.div
 
   if (reduced) {
-    const Tag = as
-    return <Tag className={className}>{children}</Tag>
+    const Plain = as
+    return <Plain className={className}>{children}</Plain>
   }
 
   return (
@@ -53,6 +56,11 @@ export function Rise({
  *
  * Words, not characters: per-character staggering on a display serif breaks the
  * kerning pairs the face was drawn with, and at hero size that is visible.
+ *
+ * The spaces between words are real text nodes, not a `::after { content: ' ' }`
+ * on the mask. Generated content is invisible to `textContent`, so the CSS
+ * version left the page reading as one run-together word to a screen reader and
+ * copying out of the page with every space missing.
  */
 export function SplitText({
   text,
@@ -60,7 +68,7 @@ export function SplitText({
   delay = 0,
   stagger = 0.055,
   immediate = false,
-  as: Tag = 'span',
+  as = 'span',
 }: {
   text: string
   className?: string
@@ -68,13 +76,14 @@ export function SplitText({
   stagger?: number
   /** Hero copy animates on mount; everything below waits for the scroll. */
   immediate?: boolean
-  as?: 'span' | 'h1' | 'h2' | 'h3' | 'p'
+  as?: Tag
 }) {
   const reduced = useReducedMotion()
   const words = text.split(' ')
 
   if (reduced) {
-    return <Tag className={className}>{text}</Tag>
+    const Plain = as
+    return <Plain className={className}>{text}</Plain>
   }
 
   const container: Variants = {
@@ -87,23 +96,29 @@ export function SplitText({
     show: { y: '0%', transition: { duration: 1.15, ease: EASE } },
   }
 
+  // `as` has to drive the animated element too, not only the reduced-motion
+  // fallback — otherwise a caller asking for a paragraph silently gets a span.
+  const MotionTag = motion[as] as typeof motion.span
+
   return (
-    <motion.span
+    <MotionTag
       className={`split ${className ?? ''}`}
       variants={container}
       initial="hidden"
       {...(immediate
         ? { animate: 'show' }
         : { whileInView: 'show', viewport: { once: true, amount: 0.4 } })}
-      aria-label={text}
     >
       {words.map((w, i) => (
-        <span className="split__mask" key={`${w}-${i}`} aria-hidden="true">
-          <motion.span className="split__word" variants={word}>
-            {w}
-          </motion.span>
-        </span>
+        <Fragment key={`${w}-${i}`}>
+          <span className="split__mask">
+            <motion.span className="split__word" variants={word}>
+              {w}
+            </motion.span>
+          </span>
+          {i < words.length - 1 ? ' ' : null}
+        </Fragment>
       ))}
-    </motion.span>
+    </MotionTag>
   )
 }

@@ -39,10 +39,10 @@ export function Hero() {
         </motion.p>
 
         <h1 className="hero__name">
-          <span className="visually-hidden">
-            {profile.name} — {profile.role}
-          </span>
           <SplitText text={first} immediate delay={0.35} className="hero__line" />
+          {/* The two lines are separate blocks; this keeps the name a name
+              when the page is read aloud or copied out of. */}
+          {' '}
           <SplitText
             text={rest.join(' ')}
             immediate

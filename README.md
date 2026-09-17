@@ -92,8 +92,13 @@ scene or the effects are responsible.
 
 `prefers-reduced-motion: reduce` disables Lenis and falls back to native
 scrolling, renders every reveal in its resting state, and freezes the scene to
-a single static frame. Plates snap open on their first frame rather than easing,
-so nothing is left invisible.
+a single static frame.
+
+That frame is composed for stillness rather than being the animated scene
+paused: the water opens at mid-depth instead of at the surface, and the creature
+is left out, because frozen at full surface brightness it sat over the project
+copy with no way to drift clear of it. Plates snap open on their first frame
+rather than easing, so no artwork is left invisible.
 
 ## Notes
 
