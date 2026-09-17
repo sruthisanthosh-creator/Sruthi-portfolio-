@@ -13,13 +13,18 @@ caustics and every project plate are fragment shaders evaluated every frame.
 ## Seeing it
 
 **Live:** pushing to the default branch builds and publishes to GitHub Pages via
-`.github/workflows/deploy.yml`, which turns Pages on itself on the first run. The
-URL is <https://sruthisanthosh-creator.github.io/Sruthi-portfolio-/>, and it also
-appears under Settings → Pages.
+`.github/workflows/deploy.yml`. It needs one setting turned on by hand first:
 
-If the deploy ever fails with *"Get Pages site failed"*, the repository's
-settings disallow the workflow enabling Pages by API — set **Settings → Pages →
-Build and deployment → Source → "GitHub Actions"** by hand once and re-run.
+> **Settings → Pages → Build and deployment → Source → "GitHub Actions"**
+
+Then re-run the workflow from the Actions tab. The site lands at
+<https://sruthisanthosh-creator.github.io/Sruthi-portfolio-/> and every push
+after that deploys on its own.
+
+That one step cannot be scripted. Having the workflow create the Pages site
+itself (`enablement: true` on `configure-pages`) fails with *"Resource not
+accessible by integration"* — creating a Pages site needs administration rights
+the workflow token does not carry.
 
 **Locally:**
 
